@@ -17,10 +17,12 @@ my_number = ""
 account_SID = ""
 token = ""
 
+
 # Twilio setup
 client = Client(account_SID, token)      
 
 data_rows = soup.findAll("tr", attrs={"class": "table-row filter-row"})
+
 
 idx_counter = 1
 output_counter = 1
@@ -51,13 +53,14 @@ for row in data_rows:
 
     current_price_for_calc = float(current_price.replace('$',''))
 
+    
     if symbol == 'BTC' and current_price_for_calc < 40000:
         BTC_textmessage = client.messages.create(to=my_number, from_=twilio_number, body="BTC IS BELOW $40000")
         
 
     if symbol == 'ETH' and current_price_for_calc < 3000:
         ETH_textmessage = client.messages.create(to=my_number, from_=twilio_number, body="ETH IS BELOW $3000")
-        
+     
     
     adjusted_24_hr_percent = float(str('.0') + change_over_24_hrs.strip('%').replace('.',''))
     
@@ -85,8 +88,12 @@ for row in data_rows:
         print(f'Symbol: {symbol}')
         print(f'Cryptocurrency Name: {name}')
         print(f'Current price: {current_price}')
-        print(f'% Change (past 24 hrs): {change_over_24_hrs}')
+        if data_cells[idx_counter + 7] in falling_cells:
+            print(f'% Change (past 24 hrs): -{change_over_24_hrs}')
+        else:
+            print(f'% Change (past 24 hrs): {change_over_24_hrs}')
         print(f'Price accounting for 24-hr % change: ${adjusted_price_based_on_percent}')
         print()
+        input()
     
     output_counter += 1
