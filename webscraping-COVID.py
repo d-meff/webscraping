@@ -74,7 +74,7 @@ for row in table_rows[2:52]:
         state_worst_test = state
         low_test_ratio = test_rate
 
-    if test_rate > low_test_ratio:
+    if test_rate > high_test_ratio:
         state_best_test = state
         high_test_ratio = test_rate
 
